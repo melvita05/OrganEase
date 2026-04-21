@@ -33,35 +33,7 @@ npm start
 
 ### Access the web app on your system at http://localhost:3000/
 
-<hr>
 
-### Screenshots
-
-<p align="center">
-  <img src="./Screenshots/1.jpeg" alt="image"/>
-</p>
-
-<p align="center">
-  <img src="./Screenshots/2.jpeg" alt="image"/>
-</p>
-
-<p align="center">
-  <img src="./Screenshots/3.jpeg" alt="image"/>
-</p>
-
-<p align="center">
-  <img src="./Screenshots/4.jpeg" alt="image"/>
-</p>
-
-<p align="center">
-  <img src="./Screenshots/5.jpeg" alt="image"/>
-</p>
-
-<p align="center">
-  <img src="./Screenshots/6.jpeg" alt="image"/>
-</p>
-
-<hr>
 
 As organs are needed ASAP for operations, time is the most crucial aspect. However, the existing method to request organs from procurement centre/ transplant centres is completely manual (manual data entry, manual communication via faxes, mails, phone calls) and thus is obviously error prone and time consuming. Therefore to solve this grave issue, 'OrganEase' is proposed. 
 

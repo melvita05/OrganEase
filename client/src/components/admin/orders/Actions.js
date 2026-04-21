@@ -1,0 +1,116 @@
+import { getAllOrder, deleteOrder } from "./FetchApi";
+
+export const fetchData = async (dispatch) => {
+  dispatch({ type: "loading", payload: true });
+  let responseData = await getAllOrder();
+  setTimeout(() => {
+    if (responseData && responseData.Orders) {
+      dispatch({
+        type: "fetchOrderAndChangeState",
+        payload: responseData.Orders,
+      });
+      dispatch({ type: "loading", payload: false });
+    }
+  }, 1000);
+};
+
+/* This method call the editmodal & dispatch category context */
+export const editOrderReq = (oId, type, status, dispatch) => {
+  if (type) {
+    console.log("Opening update modal with status:", status); // check correct status
+    
+    dispatch({ type: "updateOrderModalOpen", oId: oId, status: status });
+  }
+};
+
+export const deleteOrderReq = async (oId, dispatch) => {
+  let responseData = await deleteOrder(oId);
+  console.log(responseData);
+  if (responseData && responseData.success) {
+    fetchData(dispatch);
+  }
+};
+
+/* Filter All Order */
+{/*
+export const filterOrder = async (
+  type,
+  data,
+  dispatch,
+  dropdown,
+  setDropdown
+) => {
+  let responseData = await getAllOrder();
+  if (responseData && responseData.Orders) {
+    let newData;
+    if (type === "All") {
+      dispatch({
+        type: "fetchOrderAndChangeState",
+        payload: responseData.Orders,
+      });
+      setDropdown(!dropdown);
+    } else if (type === "Not processed") {
+      newData = responseData.Orders.filter(
+        (item) => item.status === "Not processed"
+      );
+      dispatch({ type: "fetchOrderAndChangeState", payload: newData });
+      setDropdown(!dropdown);
+    } else if (type === "Under Scrutiny") {
+      newData = responseData.Orders.filter(
+        (item) => item.status === "Processing"
+      );
+      dispatch({ type: "fetchOrderAndChangeState", payload: newData });
+      setDropdown(!dropdown);
+    } else if (type === "Request Accepted") {
+      newData = responseData.Orders.filter((item) => item.status === "Shipped");
+      dispatch({ type: "fetchOrderAndChangeState", payload: newData });
+      setDropdown(!dropdown);
+    } else if (type === "Expired") {
+      newData = responseData.Orders.filter(
+        (item) => item.status === "Delivered"
+      );
+      dispatch({ type: "fetchOrderAndChangeState", payload: newData });
+      setDropdown(!dropdown);
+    } else if (type === "Cancelled") {
+      newData = responseData.Orders.filter(
+        (item) => item.status === "Cancelled"
+      );
+      dispatch({ type: "fetchOrderAndChangeState", payload: newData });
+      setDropdown(!dropdown);
+    }
+  }
+};*/}
+export const filterOrder = async (type, data, dispatch, dropdown, setDropdown) => {
+  // Fetch all orders once
+  let responseData = await getAllOrder();
+  if (!responseData || !responseData.Orders) return;
+
+  let filteredOrders = [];
+
+  // Map dropdown label to actual order.status
+  const statusMap = {
+    "All": "All",
+    "Not processed": "Not processed",
+    "Under Scrutiny": "Processing",
+    "Request Accepted": "Shipped",
+    "Expired": "Delivered",
+    "Cancelled": "Cancelled",
+  };
+
+  if (type === "All") {
+    filteredOrders = responseData.Orders; // show all orders
+  } else {
+    const targetStatus = statusMap[type];
+    filteredOrders = responseData.Orders.filter(
+      (item) => item.status. toLowerCase() === targetStatus.toLowerCase()
+
+    );
+  }
+
+  // Dispatch filtered orders
+  dispatch({ type: "fetchOrderAndChangeState", payload: filteredOrders });
+
+  // Close dropdown
+  setDropdown(false);
+};
+
